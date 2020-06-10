@@ -19,7 +19,7 @@ public class ClientThread extends Thread {
     public void run() {
         try {
             PrintWriter out1 = new PrintWriter(socket.getOutputStream(),true);
-            if (this.count >= 3){
+            if (this.count >= 4){
                 out1.println("The server is full");
                 this.socket.close();
             }
