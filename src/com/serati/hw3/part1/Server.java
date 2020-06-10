@@ -5,16 +5,18 @@ import java.net.*;
 public class Server {
     public static void main(String[] args) {
         try {
-            ServerSocket serverSocket = new ServerSocket(12345);
+            ServerSocket serverSocket = new ServerSocket(12345, 4);
             int clientsCount = 0;
-            while (clientsCount <= 4){
+            while (clientsCount <= 3){
                 System.out.println("Waiting for clients");
                 Socket clientSocket = serverSocket.accept();
-                clientsCount ++;
                 System.out.println("Client is connected");
-                ClientThread clientThread = new ClientThread(clientSocket);
+                ClientThread clientThread = new ClientThread(clientSocket, clientsCount);
                 clientThread.start();
+                clientsCount ++;
             }
+
+
         }
         catch (Exception e){
             e.toString();
