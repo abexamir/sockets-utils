@@ -8,6 +8,7 @@ public class Server {
         try {
             ServerSocket serverSocket = new ServerSocket(12345, 4);
             int clientsCount = 0;
+            serverSocket.setSoTimeout(10000);
             while (clientsCount <= 4){
                 System.out.println("Waiting for clients");
                 Socket clientSocket = serverSocket.accept();
