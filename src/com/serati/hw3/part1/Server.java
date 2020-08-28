@@ -15,6 +15,7 @@ public class Server {
 //            serverSocket.setSoTimeout(10000);
             while (true) {
                 ServerSocket serverSocket = new ServerSocket(PORT);
+                serverSocket.setSoTimeout(10000);
                 System.out.println("Waiting for clients");
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Client is connected");
