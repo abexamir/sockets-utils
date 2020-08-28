@@ -1,26 +1,31 @@
 package com.serati.hw3.part1;
 
-import java.io.PrintWriter;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
+
+    private static final int PORT = 12345;
+    private static ArrayList<ClientHandler> clients = new ArrayList<>();
+    private static final ExecutorService pool = Executors.newFixedThreadPool(4);
     public static void main(String[] args) {
         try {
-            ServerSocket serverSocket = new ServerSocket(12345, 4);
-            int clientsCount = 0;
-            serverSocket.setSoTimeout(10000);
-            while (clientsCount <= 4){
+//            serverSocket.setSoTimeout(10000);
+            while (true) {
+                ServerSocket serverSocket = new ServerSocket(PORT);
                 System.out.println("Waiting for clients");
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Client is connected");
-                ClientThread clientThread = new ClientThread(clientSocket, clientsCount);
-                clientThread.start();
-                clientsCount ++;
+                ClientHandler clientThread = new ClientHandler(clientSocket);
+                clients.add(clientThread);
+                pool.execute(clientThread);
             }
-            Socket notAcceptedClient = serverSocket.accept();
-            PrintWriter out1 = new PrintWriter(notAcceptedClient.getOutputStream(),true);
-            out1.println("The server is full");
-            notAcceptedClient.close();
+//            Socket notAcceptedClient = serverSocket.accept();
+//            PrintWriter out1 = new PrintWriter(notAcceptedClient.getOutputStream(),true);
+//            out1.println("The server is full");
+//            notAcceptedClient.close();
         }
         catch (Exception e){
             e.toString();
