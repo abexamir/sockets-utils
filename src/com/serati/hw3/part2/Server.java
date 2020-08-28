@@ -10,8 +10,8 @@ class Server {
     public static void main(String args[]) throws IOException {
         try  {
             DatagramSocket socket = new DatagramSocket(1234);
-            byte[] receiveData = new byte[2048];
-            byte[] sendData = new byte[2048];
+            byte[] receiveData = new byte[8192];
+            byte[] sendData = new byte[8192];
             while(true) {
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 socket.receive(receivePacket);
