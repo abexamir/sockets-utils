@@ -18,10 +18,11 @@ public class Client implements Runnable {
             t1 = new Thread(this);
             t2 = new Thread(this);
             socket = new Socket("localhost", 5000);
-            t1.start();;
+            t1.start();
             t2.start();
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -34,15 +35,16 @@ public class Client implements Runnable {
                     pr1 = new PrintWriter(socket.getOutputStream(), true);
                     in = br1.readLine();
                     pr1.println(in);
-                } while (!in.equals("END"));
+                } while (!in.equals("GOOD BYE"));
             } else {
                 do {
                     br2 = new BufferedReader(new   InputStreamReader(socket.getInputStream()));
                     out = br2.readLine();
-                    System.out.println("Server says : : : " + out);
-                } while (!out.equals("END"));
+                    System.out.println("[+] Server: " + out);
+                } while (!out.equals("GOOD BYE"));
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
