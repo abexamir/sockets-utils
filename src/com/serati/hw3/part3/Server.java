@@ -1,62 +1,54 @@
 package com.serati.hw3.part3;
-//SERVER
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.PrintWriter;
+import java.net.*;
 
-public class Server {
+public class Server implements Runnable {
 
-    private static Socket socket;
+    ServerSocket serverSocket;
+    BufferedReader br1, br2;
+    PrintWriter pr1;
+    Socket socket;
+    Thread t1, t2;
+    String in="",out="";
 
-    public static void main(String[] args)
-    {
-        try
-        {
-            int port = 25000;
-            ServerSocket serverSocket = new ServerSocket(port);
+    public Server() {
+        try {
+            t1 = new Thread(this);
+            t2 = new Thread(this);
+            serverSocket = new ServerSocket(5000);
+            System.out.println("Server is waiting. . . . ");
             socket = serverSocket.accept();
-            System.out.println("Server Started and listening to the port 25000");
-            //while(true){
-            //Server is running always. This is done using this while(true) loop
-            //Reading the message from the client
+            System.out.println("Client connected with Ip " +  socket.getInetAddress().getHostAddress());
+            t1.start();
+            t2.start();
 
-            InputStream is = socket.getInputStream();
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr);
-            String number = br.readLine();
-            System.out.println("Received from client: "+number+"\n");
-
-            BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-            String s = bufferRead.readLine();
-
-            //Sending the response back to the client.
-            OutputStream os = socket.getOutputStream();
-            OutputStreamWriter osw = new OutputStreamWriter(os);
-            BufferedWriter bw = new BufferedWriter(osw);
-            bw.write(s);
-            bw.flush();
-            System.out.println("Sent (to " + socket + ") client: "+s+"\n");
-
-            //String abc = bufferRead.readLine();
-            //System.out.println("SAA");
-            //}
+        } catch (Exception ignored) {
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                socket.close();
+    }
+
+    public void run() {
+        try {
+            if (Thread.currentThread() == t1) {
+                do {
+                    br1 = new BufferedReader(new InputStreamReader(System.in));
+                    pr1 = new PrintWriter(socket.getOutputStream(), true);
+                    in = br1.readLine();
+                    pr1.println(in);
+                } while (!in.equals("END"));
+            } else {
+                do {
+                    br2 = new BufferedReader(new   InputStreamReader(socket.getInputStream()));
+                    out = br2.readLine();
+                    System.out.println("Client says : : : " + out);
+                } while (!out.equals("END"));
             }
-            catch(Exception e){}
+        } catch (Exception ignored) {
         }
+    }
+
+    public static void main(String[] args) {
+        new Server();
     }
 }
