@@ -1,4 +1,4 @@
-package com.serati.hw3.part2;
+package com.application.messenger;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Client
 {
-    public static void main(String args[]) throws Exception
+    public static void main(String[] args) throws Exception
     {
         InetAddress IPAddress = InetAddress.getByName("localhost");
         Scanner scanner = new Scanner(System.in);

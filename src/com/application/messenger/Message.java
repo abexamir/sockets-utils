@@ -1,4 +1,4 @@
-package com.serati.hw3.part2;
+package com.application.messenger;
 
 import java.net.InetAddress;
 

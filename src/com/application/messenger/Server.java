@@ -1,4 +1,4 @@
-package com.serati.hw3.part2;
+package com.application.messenger;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 class Server {
 
     private static ArrayList<Message> messagesDatabase = new ArrayList<>();
-    public static void main(String args[]) throws IOException {
+    public static void main(String[] args) throws IOException {
         try  {
             DatagramSocket socket = new DatagramSocket(1234);
             byte[] receiveData = new byte[8192];
@@ -29,7 +29,7 @@ class Server {
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, clientIpAddress, clientPort);
                     socket.send(sendPacket);
                 } else if (sentence.startsWith("GET")) {
-                    StringBuilder databaseString = new StringBuilder("");
+                    StringBuilder databaseString = new StringBuilder();
                     for (Message message: messagesDatabase) {
                         databaseString.append("\n").append(message.getMessageBody()).append(" ").append(message.getAddress().toString()).append(":").append(message.getPort().toString());
                     }

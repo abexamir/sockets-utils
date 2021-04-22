@@ -1,35 +1,33 @@
-package com.serati.hw3.part3;
-
+package com.application.multiclient;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.*;
 
-public class Client implements Runnable {
+public class Server implements Runnable {
 
+    ServerSocket serverSocket;
     BufferedReader br1, br2;
     PrintWriter pr1;
     Socket socket;
     Thread t1, t2;
-    String in = "", out = "";
+    String in="",out="";
 
-    public Client() {
-        try {
-            t1 = new Thread(this);
-            t2 = new Thread(this);
-            socket = new Socket("localhost", 5000);
-            t1.start();
-            t2.start();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public Server() throws IOException {
+        t1 = new Thread(this);
+        t2 = new Thread(this);
+        serverSocket = new ServerSocket(5000);
+        System.out.println("[+] Server is Running ...");
+        socket = serverSocket.accept();
+        System.out.println("Client with IP Address" +  socket.getInetAddress().getHostAddress() + "Connected");
+        t1.start();
+        t2.start();
     }
 
     public void run() {
-
         try {
-            if (Thread.currentThread() == t2) {
+            if (Thread.currentThread() == t1) {
                 do {
                     br1 = new BufferedReader(new InputStreamReader(System.in));
                     pr1 = new PrintWriter(socket.getOutputStream(), true);
@@ -40,16 +38,14 @@ public class Client implements Runnable {
                 do {
                     br2 = new BufferedReader(new   InputStreamReader(socket.getInputStream()));
                     out = br2.readLine();
-                    System.out.println("[+] Server: " + out);
+                    System.out.println("[+] Client: " + out);
                 } while (!out.equals("GOOD BYE"));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
-
     }
 
-    public static void main(String[] args) {
-        new Client();
+    public static void main(String[] args) throws IOException {
+        new Server();
     }
 }
