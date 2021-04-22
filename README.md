@@ -1,2 +1,1 @@
-3 Simple Client-Server Applications Written in Java.
-A project for Computer Networking I course at Isfahan University of Technology.
+3 client-server applications to implement the usage of sockets and I/O streams in Java.
