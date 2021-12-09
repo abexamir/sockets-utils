@@ -1,1 +1,1 @@
-3 client-server applications to implement the usage of sockets and I/O streams in Java.
+Sockets and I/O streams utilities implemented in Java.
